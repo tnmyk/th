@@ -1,4 +1,8 @@
+mod config;
+mod llm;
+
 use clap::Parser;
+use config::Config;
 
 #[derive(Parser, Debug)]
 #[command(name = "th", version, about, long_about = None)]
@@ -15,17 +19,37 @@ async fn main() {
     let cli = Cli::parse();
 
     if cli.setup {
-        println!("Setup mode: To be implemented in Phase 2");
+        Config::setup();
         return;
     }
 
-    match cli.query {
-        Some(query) => {
-            println!("Query received: {}", query);
-            println!("LLM processing: To be implemented in Phase 3");
-        }
+    let query = match cli.query {
+        Some(q) => q,
         None => {
             println!("Please provide a query or run `th --help` for usage.");
+            std::process::exit(1);
+        }
+    };
+
+    let config = match Config::load() {
+        Some(c) => c,
+        None => {
+            println!("Error: Configuration not found or invalid. Please run `th --setup` to configure your API key.");
+            std::process::exit(1);
+        }
+    };
+
+    println!("Analyzing query: '{}'...", query);
+    
+    match llm::get_command(&config.gemini_api_key, &query).await {
+        Ok(command) => {
+            println!("\nSuggested command:");
+            println!("  {}\n", command);
+            // We'll add [R]un, [C]opy, [E]dit in Phase 5
+        }
+        Err(e) => {
+            println!("\nFailed to get a command:\n  {}", e);
+            std::process::exit(1);
         }
     }
 }

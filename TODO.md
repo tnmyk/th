@@ -1,24 +1,24 @@
 # Implementation Plan for `th` (Terminal Helper)
 
 ## Phase 1: Project Setup and CLI Parsing
-- [ ] Initialize a new Rust binary project (`cargo init`).
-- [ ] Add dependencies for CLI parsing (e.g., `clap`).
-- [ ] Add `tokio` for async runtime.
-- [ ] Implement the basic CLI interface to accept a natural language query as an argument.
-- [ ] Add basic flag support (e.g., `--help`, `--version`).
+- [x] Initialize a new Rust binary project (`cargo init`).
+- [x] Add dependencies for CLI parsing (e.g., `clap`).
+- [x] Add `tokio` for async runtime.
+- [x] Implement the basic CLI interface to accept a natural language query as an argument.
+- [x] Add basic flag support (e.g., `--help`, `--version`).
 
 ## Phase 2: Configuration Management
-- [ ] Implement a `th --setup` command to guide the user through setting up their API key.
-- [ ] Save the configuration (e.g., Gemini API Key) securely in the standard user config directory (e.g., `~/.config/th/config.toml`).
-- [ ] Log the exact path where the configuration was saved so the user knows where it is stored.
-- [ ] Load the configuration on regular runs.
+- [x] Implement a `th --setup` command to guide the user through setting up their API key.
+- [x] Save the configuration (e.g., Gemini API Key) securely in the standard user config directory (e.g., `~/.config/th/config.toml`).
+- [x] Log the exact path where the configuration was saved so the user knows where it is stored.
+- [x] Load the configuration on regular runs.
 
 ## Phase 3: LLM Integration (Gemini)
-- [ ] Choose an HTTP client (e.g., `reqwest`) and add it to dependencies.
-- [ ] Add serialization/deserialization support (e.g., `serde`, `serde_json`).
-- [ ] Construct the system prompt to guide the Gemini LLM to *only* output the exact command without markdown formatting or extra text.
-- [ ] Implement the API call to the Gemini API (using the fast `gemini-1.5-flash` model).
-- [ ] Handle API errors gracefully and provide helpful error messages to the user.
+- [x] Choose an HTTP client (e.g., `reqwest`) and add it to dependencies.
+- [x] Add serialization/deserialization support (e.g., `serde`, `serde_json`).
+- [x] Construct the system prompt to guide the Gemini LLM to *only* output the exact command without markdown formatting or extra text.
+- [x] Implement the API call to the Gemini API (using the fast `gemini-1.5-flash` model).
+- [x] Handle API errors gracefully and provide helpful error messages to the user.
 
 ## Phase 4: System Context Enrichment (UX Improvement)
 - [ ] Automatically detect the user's Operating System (macOS, Linux, Windows).
