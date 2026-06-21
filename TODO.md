@@ -21,18 +21,18 @@
 - [x] Handle API errors gracefully and provide helpful error messages to the user.
 
 ## Phase 4: System Context Enrichment (UX Improvement)
-- [ ] Automatically detect the user's Operating System (macOS, Linux, Windows).
-- [ ] Automatically detect the user's current shell (zsh, bash, fish).
-- [ ] Inject this system context into the LLM prompt to ensure the returned command is accurate for the user's specific environment.
+- [x] Automatically detect the user's Operating System (macOS, Linux, Windows).
+- [x] Automatically detect the user's current shell (zsh, bash, fish).
+- [x] Inject this system context into the LLM prompt to ensure the returned command is accurate for the user's specific environment.
 - [ ] **(Future/Optional)** Explore sending the current directory path and basic file listing (`ls`) as context to the LLM to improve directory-specific queries.
 
 ## Phase 5: Output and Interactivity (UX Improvement)
-- [ ] Print the suggested command clearly to the terminal.
-- [ ] Implement an interactive prompt after displaying the command.
-    - Options: `[R]un`, `[C]opy to clipboard`, `[E]dit`, `[A]bort`.
-    - **Edit Implementation**: Use an inline prompt (e.g., via the `inquire` or `rustyline` crate) pre-filled with the suggested command, allowing the user to modify it directly in their terminal before running or copying.
-- [ ] Implement clipboard support (e.g., using `arboard`) for copying the command.
-- [ ] Implement execution support (e.g., `std::process::Command`) to run the command if the user chooses to.
+- [x] Print the suggested command clearly to the terminal.
+- [x] Use an inline prompt (`inquire::Text`) pre-filled with the suggested command.
+    - User can hit Enter to execute immediately.
+    - User can edit the command inline before executing.
+    - User can delete the command or press Ctrl+C to abort.
+- [x] Implement execution support (e.g., `std::process::Command`) to run the final command.
 
 ## Phase 6: Polish and Release
 - [ ] Write tests for core logic.
