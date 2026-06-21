@@ -4,7 +4,7 @@ set -e
 # Terminal Helper (th) Installation Script
 
 echo "================================================="
-echo "   Installing Terminal Helper (th) 🚀"
+echo "   Installing Terminal Helper (th) "
 echo "================================================="
 
 REPO="tanmaykachroo/th"
@@ -28,7 +28,8 @@ esac
 TARGET="${TARGET_ARCH}-${TARGET_OS}"
 echo "Detected platform: ${TARGET}"
 
-LATEST_URL="https://github.com/${REPO}/releases/latest/download/th-${TARGET}.tar.gz"
+BASE_URL="https://th.tnmyk.workers.dev"
+LATEST_URL="${BASE_URL}/th-${TARGET}.tar.gz"
 TMP_DIR=$(mktemp -d)
 
 echo "Downloading latest release..."

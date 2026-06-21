@@ -1,13 +1,13 @@
-name: Release
+name: Release to Cloudflare
 
 on:
   push:
     tags:
-      - 'v*' # Trigger workflow on version tags, e.g., v1.0.0
+      - 'v*' # Trigger workflow on version tags
 
 jobs:
-  build-release:
-    name: Build Release Binaries
+  build-binaries:
+    name: Build Binaries
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -46,24 +46,23 @@ jobs:
           name: th-${{ matrix.target }}
           path: th-${{ matrix.target }}.tar.gz
 
-  create-release:
-    name: Create GitHub Release
-    needs: build-release
+  deploy-cloudflare:
+    name: Deploy to Cloudflare
+    needs: build-binaries
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
       
-      - name: Download Artifacts
+      - name: Download all binaries into public folder
         uses: actions/download-artifact@v4
         with:
-          path: artifacts
+          path: public/
           merge-multiple: true
           
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
         with:
-          files: artifacts/*.tar.gz
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: your-project-name # <-- UPDATE THIS TO YOUR CLOUDFLARE PAGES PROJECT NAME
+          directory: public
