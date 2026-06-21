@@ -1,5 +1,7 @@
 # th (Terminal Helper)
 
+[![Release](https://github.com/tnmyk/th/actions/workflows/release.yml/badge.svg)](https://github.com/tnmyk/th/actions/workflows/release.yml)
+
 `th` is a blazing fast, lightweight CLI tool written in Rust that uses AI to help you find and run the right terminal commands without leaving your shell. 
 
 Instead of Googling or digging through `man` pages, simply ask `th` what you want to do. It automatically detects your OS and shell to provide an accurate, ready-to-run command.
@@ -21,7 +23,7 @@ curl -fsSL https://th.tnmyk.workers.dev | bash
 If you prefer to compile from source, ensure you have Rust and Cargo installed, then run:
 
 ```sh
-cargo install --git https://github.com/tanmaykachroo/th.git
+cargo install --git https://github.com/tnmyk/th.git
 ```
 
 ## Setup

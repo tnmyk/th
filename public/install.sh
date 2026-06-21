@@ -7,7 +7,7 @@ echo "================================================="
 echo "   Installing Terminal Helper (th) "
 echo "================================================="
 
-REPO="tanmaykachroo/th"
+REPO="tnmyk/th"
 
 # Detect OS
 OS="$(uname -s)"
