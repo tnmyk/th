@@ -2,7 +2,6 @@
 set -e
 
 # Terminal Helper (th) Installation Script
-# Usage: curl -fsSL https://raw.githubusercontent.com/tanmaykachroo/th/main/install.sh | bash
 
 echo "================================================="
 echo "   Installing Terminal Helper (th) 🚀"
@@ -29,7 +28,6 @@ esac
 TARGET="${TARGET_ARCH}-${TARGET_OS}"
 echo "Detected platform: ${TARGET}"
 
-# Fetch latest release URL
 LATEST_URL="https://github.com/${REPO}/releases/latest/download/th-${TARGET}.tar.gz"
 TMP_DIR=$(mktemp -d)
 
@@ -49,13 +47,10 @@ mkdir -p "$INSTALL_DIR"
 echo "Installing to $INSTALL_DIR..."
 mv "$TMP_DIR/th" "$INSTALL_DIR/th"
 chmod +x "$INSTALL_DIR/th"
-
-# Cleanup
 rm -rf "$TMP_DIR"
 
 echo ""
 echo "✅ Installation complete!"
-echo ""
 echo "Make sure $INSTALL_DIR is in your PATH."
 echo "If you can't run 'th', add this to your ~/.zshrc or ~/.bashrc:"
 echo "  export PATH=\"$INSTALL_DIR:\$PATH\""
