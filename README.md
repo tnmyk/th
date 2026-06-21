@@ -11,13 +11,20 @@ Instead of Googling or digging through `man` pages, simply ask `th` what you wan
 
 ## Installation
 
-Ensure you have Rust and Cargo installed, then run:
+The easiest way to install `th` on macOS or Linux is using the automatic install script, which automatically downloads the pre-compiled binary for your system:
 
 ```sh
-cargo install --path .
+curl -fsSL https://raw.githubusercontent.com/tanmaykachroo/th/main/public/install.sh | bash
 ```
 
-*(Note: Crates.io publication coming soon!)*
+*(Tip: If you successfully set up the Cloudflare Pages deployment, you can use your custom vanity URL instead! e.g., `curl -fsSL https://th-install.pages.dev | bash`)*
+
+### From Source (Requires Rust)
+If you prefer to compile from source, ensure you have Rust and Cargo installed, then run:
+
+```sh
+cargo install --git https://github.com/tanmaykachroo/th.git
+```
 
 ## Setup
 
