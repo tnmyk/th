@@ -14,10 +14,8 @@ Instead of Googling or digging through `man` pages, simply ask `th` what you wan
 The easiest way to install `th` on macOS or Linux is using the automatic install script, which automatically downloads the pre-compiled binary for your system:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/tanmaykachroo/th/main/public/install.sh | bash
+curl -fsSL https://th.tnmyk.workers.dev | bash
 ```
-
-*(Tip: If you successfully set up the Cloudflare Pages deployment, you can use your custom vanity URL instead! e.g., `curl -fsSL https://th-install.pages.dev | bash`)*
 
 ### From Source (Requires Rust)
 If you prefer to compile from source, ensure you have Rust and Cargo installed, then run:
