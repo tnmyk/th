@@ -17,7 +17,7 @@ Instead of Googling or digging through `man` pages, simply ask `th` what you wan
 The easiest way to install `th` on macOS or Linux is using the automatic install script, which automatically downloads the pre-compiled binary for your system:
 
 ```sh
-curl -fsSL https://th.tnmyk.workers.dev | bash
+curl -fsSL https://th.tnmyk.workers.dev/install.sh | bash
 ```
 
 ### From Source (Requires Rust)
