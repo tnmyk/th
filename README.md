@@ -10,6 +10,7 @@ Instead of Googling or digging through `man` pages, simply ask `th` what you wan
 - **Speed**: Powered by Google's `gemini-3.1-flash-lite` model for near-instantaneous responses.
 - **Context-Aware**: Automatically injects your OS (macOS/Linux/Windows) and current shell (zsh/bash/fish) into the prompt for perfect accuracy.
 - **Interactive Execution**: Drops you into a live-edit prompt. Hit `Enter` to run the command immediately, tweak it inline, or hit `Ctrl+C` to safely abort.
+- **History Integration**: Automatically saves executed commands to your shell history (`.zsh_history` / `.bash_history`) so they are accessible via the UP arrow.
 
 ## Installation
 
@@ -34,6 +35,11 @@ Run the interactive setup wizard:
 ```sh
 th --setup
 ```
+
+### Shell Configuration (Optional)
+For commands executed by `th` to appear *instantly* when you press the UP arrow in your currently open terminal window, your shell must be configured to share history.
+- **Zsh**: Ensure you have `setopt INC_APPEND_HISTORY` or `setopt SHARE_HISTORY` in your `~/.zshrc` (enabled by default in Oh-My-Zsh).
+- **Bash**: Ensure you have `shopt -s histappend` and `PROMPT_COMMAND="history -a; $PROMPT_COMMAND"` in your `~/.bashrc`.
 
 ## Usage
 
