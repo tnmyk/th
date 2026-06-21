@@ -174,15 +174,23 @@ h1 {
     animation: appear 0s ease 2s both;
 }
 
-.installation {
+.actions-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+    width: 100%;
+}
+
+.action-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.75rem;
-    animation: fadeInUp 0.8s ease-out 0.4s both;
 }
 
-.install-label {
+.action-label {
     font-size: 0.875rem;
     color: var(--text-secondary);
     text-transform: uppercase;
