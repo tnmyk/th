@@ -70,21 +70,36 @@ async fn main() {
                 }
 
                 let shell = env::var("SHELL").unwrap_or_else(|_| "sh".to_string());
-                
+
                 // Attempt to add to shell history
                 if let Some(base_dirs) = directories::BaseDirs::new() {
                     let home = base_dirs.home_dir();
                     if shell.contains("zsh") {
-                        let hist_file = env::var("HISTFILE").unwrap_or_else(|_| home.join(".zsh_history").to_string_lossy().to_string());
-                        let timestamp = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap_or_default().as_secs();
+                        let hist_file = env::var("HISTFILE").unwrap_or_else(|_| {
+                            home.join(".zsh_history").to_string_lossy().to_string()
+                        });
+                        let timestamp = std::time::SystemTime::now()
+                            .duration_since(std::time::UNIX_EPOCH)
+                            .unwrap_or_default()
+                            .as_secs();
                         let hist_entry = format!(": {}:0;{}\n", timestamp, final_cmd);
-                        if let Ok(mut file) = std::fs::OpenOptions::new().append(true).create(true).open(hist_file) {
+                        if let Ok(mut file) = std::fs::OpenOptions::new()
+                            .append(true)
+                            .create(true)
+                            .open(hist_file)
+                        {
                             use std::io::Write;
                             let _ = file.write_all(hist_entry.as_bytes());
                         }
                     } else if shell.contains("bash") {
-                        let hist_file = env::var("HISTFILE").unwrap_or_else(|_| home.join(".bash_history").to_string_lossy().to_string());
-                        if let Ok(mut file) = std::fs::OpenOptions::new().append(true).create(true).open(hist_file) {
+                        let hist_file = env::var("HISTFILE").unwrap_or_else(|_| {
+                            home.join(".bash_history").to_string_lossy().to_string()
+                        });
+                        if let Ok(mut file) = std::fs::OpenOptions::new()
+                            .append(true)
+                            .create(true)
+                            .open(hist_file)
+                        {
                             use std::io::Write;
                             let _ = file.write_all(format!("{}\n", final_cmd).as_bytes());
                         }
