@@ -15,11 +15,7 @@ impl Config {
         // Linux:   ~/.config/th
         // Windows: C:\Users\Alice\AppData\Roaming\th\config
         // macOS:   ~/Library/Application Support/th
-        if let Some(proj_dirs) = ProjectDirs::from("", "", "th") {
-            Some(proj_dirs.config_dir().to_path_buf())
-        } else {
-            None
-        }
+        ProjectDirs::from("", "", "th").map(|proj_dirs| proj_dirs.config_dir().to_path_buf())
     }
 
     pub fn get_config_path() -> Option<PathBuf> {
@@ -43,7 +39,9 @@ impl Config {
         io::stdout().flush().unwrap();
 
         let mut api_key = String::new();
-        io::stdin().read_line(&mut api_key).expect("Failed to read line");
+        io::stdin()
+            .read_line(&mut api_key)
+            .expect("Failed to read line");
         let api_key = api_key.trim().to_string();
 
         if api_key.is_empty() {
@@ -51,7 +49,9 @@ impl Config {
             return;
         }
 
-        let config = Config { gemini_api_key: api_key };
+        let config = Config {
+            gemini_api_key: api_key,
+        };
 
         let config_dir = match Self::get_config_dir() {
             Some(dir) => dir,
@@ -74,6 +74,32 @@ impl Config {
             return;
         }
 
-        println!("\nSuccess! Configuration saved to: {}", config_path.display());
+        println!(
+            "\nSuccess! Configuration saved to: {}",
+            config_path.display()
+        );
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_config_serialization() {
+        let config = Config {
+            gemini_api_key: "dummy_key_123".to_string(),
+        };
+        let toml_string = toml::to_string(&config).unwrap();
+        assert!(toml_string.contains("gemini_api_key = \"dummy_key_123\""));
+
+        let deserialized: Config = toml::from_str(&toml_string).unwrap();
+        assert_eq!(deserialized.gemini_api_key, "dummy_key_123");
+    }
+
+    #[test]
+    fn test_get_config_dir() {
+        let dir = Config::get_config_dir();
+        assert!(dir.is_some());
     }
 }

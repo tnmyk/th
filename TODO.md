@@ -35,6 +35,6 @@
 - [x] Implement execution support (e.g., `std::process::Command`) to run the final command.
 
 ## Phase 6: Polish and Release
-- [ ] Write tests for core logic.
-- [ ] Setup a basic CI/CD pipeline (GitHub Actions).
-- [ ] Publish to crates.io or provide installation instructions.
+- [x] Write tests for core logic.
+- [x] Setup a basic CI/CD pipeline (GitHub Actions).
+- [x] Publish to crates.io or provide installation instructions.

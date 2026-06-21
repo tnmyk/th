@@ -1,13 +1,46 @@
-# Terminal Helper
+# th (Terminal Helper)
 
-Find the right commands to run without leaving your terminal.
+`th` is a blazing fast, lightweight CLI tool written in Rust that uses AI to help you find and run the right terminal commands without leaving your shell. 
 
-# Usage
+Instead of Googling or digging through `man` pages, simply ask `th` what you want to do. It automatically detects your OS and shell to provide an accurate, ready-to-run command.
+
+## Features
+- **Speed**: Powered by Google's `gemini-3.1-flash-lite` model for near-instantaneous responses.
+- **Context-Aware**: Automatically injects your OS (macOS/Linux/Windows) and current shell (zsh/bash/fish) into the prompt for perfect accuracy.
+- **Interactive Execution**: Drops you into a live-edit prompt. Hit `Enter` to run the command immediately, tweak it inline, or hit `Ctrl+C` to safely abort.
+
+## Installation
+
+Ensure you have Rust and Cargo installed, then run:
+
 ```sh
-th "command to grep xyz in the current directory"
+cargo install --path .
 ```
 
+*(Note: Crates.io publication coming soon!)*
 
-# How it works
+## Setup
 
-On running th with the description of requirement, th will make a call to any cheap/free LLM online and return the suggested command.
+Before using `th`, you need to configure it with a Google Gemini API key. You can get one for free from Google AI Studio.
+
+Run the interactive setup wizard:
+```sh
+th --setup
+```
+
+## Usage
+
+Just pass your natural language query directly to `th`:
+
+```sh
+th "find all text files recursively and delete them"
+```
+
+The tool will display a spinner, fetch the command, and present it to you in an edit prompt:
+```
+Command: find . -name "*.txt" -type f -delete
+```
+Press **Enter** to run, or modify it before executing.
+
+## How it works
+On running `th` with a natural language description, it makes a secure API call to the Gemini API. It enforces strict constraints so the AI only returns the raw command string, which is then passed back to your terminal for review and execution.
