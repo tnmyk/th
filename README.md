@@ -39,7 +39,7 @@ th --setup
 ### Shell Configuration (Optional)
 For commands executed by `th` to appear *instantly* when you press the UP arrow in your currently open terminal window, your shell must be configured to share history.
 - **Zsh**: Ensure you have `setopt INC_APPEND_HISTORY` or `setopt SHARE_HISTORY` in your `~/.zshrc` (enabled by default in Oh-My-Zsh).
-- **Bash**: Ensure you have `shopt -s histappend` and `PROMPT_COMMAND="history -a; $PROMPT_COMMAND"` in your `~/.bashrc`.
+- **Bash**: Ensure you have `shopt -s histappend` and `PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"` in your `~/.bashrc`.
 
 ## Usage
 

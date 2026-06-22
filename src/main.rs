@@ -83,26 +83,29 @@ async fn main() {
                             .unwrap_or_default()
                             .as_secs();
                         let hist_entry = format!(": {}:0;{}\n", timestamp, final_cmd);
-                        if let Ok(mut file) = std::fs::OpenOptions::new()
-                            .append(true)
-                            .create(true)
-                            .open(hist_file)
-                        {
-                            use std::io::Write;
-                            let _ = file.write_all(hist_entry.as_bytes());
-                        }
+                        
+                        // We use a delayed background append because Zsh's INC_APPEND_HISTORY
+                        // will append the `th` command itself right after this process exits,
+                        // which updates Zsh's internal file size counter and masks our append.
+                        let script = format!(
+                            "sleep 0.1; printf \"%s\" '{}' >> '{}'",
+                            hist_entry.replace("'", "'\\''"),
+                            hist_file
+                        );
+                        Command::new("sh").arg("-c").arg(script).spawn().ok();
+                        
                     } else if shell.contains("bash") {
                         let hist_file = env::var("HISTFILE").unwrap_or_else(|_| {
                             home.join(".bash_history").to_string_lossy().to_string()
                         });
-                        if let Ok(mut file) = std::fs::OpenOptions::new()
-                            .append(true)
-                            .create(true)
-                            .open(hist_file)
-                        {
-                            use std::io::Write;
-                            let _ = file.write_all(format!("{}\n", final_cmd).as_bytes());
-                        }
+                        
+                        let hist_entry = format!("{}\n", final_cmd);
+                        let script = format!(
+                            "sleep 0.1; printf \"%s\" '{}' >> '{}'",
+                            hist_entry.replace("'", "'\\''"),
+                            hist_file
+                        );
+                        Command::new("sh").arg("-c").arg(script).spawn().ok();
                     }
                 }
 
