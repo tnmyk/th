@@ -1,0 +1,7 @@
+name = "th"
+compatibility_date = "2026-06-21"
+assets = { directory = "public" }
+
+[[routes]]
+pattern = "th.tanmay.sh"
+custom_domain = true
