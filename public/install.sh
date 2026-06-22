@@ -28,7 +28,7 @@ esac
 TARGET="${TARGET_ARCH}-${TARGET_OS}"
 echo "Detected platform: ${TARGET}"
 
-BASE_URL="https://th.tnmyk.workers.dev"
+BASE_URL="https://th.tanmay.sh"
 LATEST_URL="${BASE_URL}/th-${TARGET}.tar.gz"
 TMP_DIR=$(mktemp -d)
 
