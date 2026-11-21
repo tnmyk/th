@@ -83,7 +83,7 @@ async fn main() {
                             .unwrap_or_default()
                             .as_secs();
                         let hist_entry = format!(": {}:0;{}\n", timestamp, final_cmd);
-                        
+
                         // We use a delayed background append because Zsh's INC_APPEND_HISTORY
                         // will append the `th` command itself right after this process exits,
                         // which updates Zsh's internal file size counter and masks our append.
@@ -93,12 +93,11 @@ async fn main() {
                             hist_file
                         );
                         Command::new("sh").arg("-c").arg(script).spawn().ok();
-                        
                     } else if shell.contains("bash") {
                         let hist_file = env::var("HISTFILE").unwrap_or_else(|_| {
                             home.join(".bash_history").to_string_lossy().to_string()
                         });
-                        
+
                         let hist_entry = format!("{}\n", final_cmd);
                         let script = format!(
                             "sleep 0.1; printf \"%s\" '{}' >> '{}'",
