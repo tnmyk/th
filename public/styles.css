@@ -132,8 +132,14 @@ h1 {
     padding: 20px;
     font-family: var(--font-mono);
     font-size: 0.875rem;
+    line-height: 1.5;
     text-align: left;
     color: var(--text-primary);
+    min-height: 230px;
+}
+
+[hidden] {
+    display: none !important;
 }
 
 .line {
@@ -144,18 +150,22 @@ h1 {
 
 .prompt {
     color: #4ade80;
+    flex-shrink: 0;
 }
 
 .command {
     color: #e2e2e4;
+    overflow-wrap: anywhere;
 }
 
-.output {
+.command-label {
     color: var(--text-secondary);
+    flex-shrink: 0;
 }
 
-.output.success {
+.command-result {
     color: #e2e2e4;
+    overflow-wrap: anywhere;
 }
 
 .cursor {
@@ -166,12 +176,82 @@ h1 {
     animation: blink 1s step-end infinite;
 }
 
-.delay-1 {
-    animation: appear 0s ease 1.5s both;
+.typing-cursor {
+    flex-shrink: 0;
+    align-self: center;
+    height: 0.9em;
 }
 
-.delay-2 {
-    animation: appear 0s ease 2s both;
+.spinner-line {
+    color: var(--text-secondary);
+}
+
+.spinner {
+    color: #22d3ee;
+    width: 1ch;
+}
+
+.demo-output {
+    margin: 0 0 8px;
+    max-height: 340px;
+    overflow: auto;
+    scrollbar-width: thin;
+}
+
+.out-line {
+    display: block;
+    white-space: pre;
+}
+
+.out-line.dim {
+    color: #6f6f7a;
+}
+
+.out-line.match {
+    color: #e2e2e4;
+}
+
+.final-line {
+    margin-bottom: 0;
+}
+
+.replay-btn {
+    margin-left: auto;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.replay-btn:hover:not(:disabled) {
+    color: var(--text-primary);
+    border-color: var(--terminal-border);
+}
+
+.replay-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.demo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+    width: 100%;
+}
+
+.demo-note {
+    color: #6f6f7a;
+    font-size: 0.8125rem;
 }
 
 .actions-group {
@@ -261,11 +341,6 @@ h1 {
     }
 }
 
-@keyframes appear {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
 .shell-config {
     margin-top: 1rem;
     text-align: left;
@@ -323,6 +398,15 @@ h1 {
     
     .container {
         padding: 1.5rem;
+    }
+
+    .terminal-body {
+        font-size: 0.8rem;
+        padding: 16px;
+    }
+
+    .demo-output {
+        max-height: 280px;
     }
     
     .code-block {

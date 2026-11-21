@@ -31,25 +31,47 @@
                     <p class="subtitle">A lightweight CLI tool to find and run the right commands. No googling, just ask.</p>
                 </div>
                 
-                <div class="terminal-mockup">
-                    <div class="terminal-header">
-                        <span class="dot red"></span>
-                        <span class="dot yellow"></span>
-                        <span class="dot green"></span>
+                <div class="demo-wrap">
+                    <div class="terminal-mockup">
+                        <div class="terminal-header">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                            <button class="replay-btn" id="replay-demo" type="button" aria-label="Replay the terminal example">
+                                replay
+                                <svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <polyline points="23 4 23 10 17 10"></polyline>
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="terminal-body" id="demo-terminal">
+                            <div class="line query-line">
+                                <span class="prompt">~ $</span>
+                                <span class="command" id="demo-query">th "line counts of rust files in src"</span>
+                                <span class="cursor typing-cursor" id="demo-typing-cursor" hidden></span>
+                            </div>
+                            <div class="line spinner-line" id="demo-spinner" hidden>
+                                <span class="spinner" id="demo-spinner-glyph" aria-hidden="true">⠋</span>
+                                <span class="spinner-text">Thinking...</span>
+                            </div>
+                            <div class="line command-line" id="demo-command-line">
+                                <span class="command-label">Command:</span>
+                                <span class="command-result" id="demo-command">wc -l src/*.rs</span>
+                            </div>
+                            <div class="demo-output" id="demo-output">
+                                <span class="out-line match">     105 src/config.rs</span>
+                                <span class="out-line match">      87 src/llm.rs</span>
+                                <span class="out-line match">     132 src/main.rs</span>
+                                <span class="out-line dim">     324 total</span>
+                            </div>
+                            <div class="line final-line" id="demo-final-line">
+                                <span class="prompt">~ $</span>
+                                <span class="cursor"></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="terminal-body">
-                        <div class="line">
-                            <span class="prompt">~ $</span>
-                            <span class="command">th "search for TODO or FIXME in rust files, exclude target dir, show 2 lines context"</span>
-                        </div>
-                        <div class="line delay-1">
-                            <span class="output success">Command: grep -rnE "TODO|FIXME" --include="*.rs" --exclude-dir="target" -C 2 .</span>
-                        </div>
-                        <div class="line delay-2">
-                            <span class="prompt">~ $</span>
-                            <span class="cursor"></span>
-                        </div>
-                    </div>
+                    <p class="demo-note">Recorded from a real run in this repo.</p>
                 </div>
 
                 <div class="actions-group">
@@ -103,6 +125,101 @@
                 }, 2000);
             });
         }
+
+        (() => {
+            const queryEl = document.getElementById('demo-query');
+            const typingCursor = document.getElementById('demo-typing-cursor');
+            const spinnerLine = document.getElementById('demo-spinner');
+            const spinnerGlyph = document.getElementById('demo-spinner-glyph');
+            const commandLine = document.getElementById('demo-command-line');
+            const outputEl = document.getElementById('demo-output');
+            const finalLine = document.getElementById('demo-final-line');
+            const replayBtn = document.getElementById('replay-demo');
+
+            if (!queryEl || !replayBtn) return;
+
+            const query = queryEl.textContent.trim();
+            const outputLines = Array.from(outputEl.querySelectorAll('.out-line'));
+            const spinnerFrames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+            let runToken = 0;
+            let spinnerTimer = null;
+
+            function stopSpinner() {
+                if (spinnerTimer !== null) {
+                    clearInterval(spinnerTimer);
+                    spinnerTimer = null;
+                }
+            }
+
+            function resetDemo() {
+                stopSpinner();
+                queryEl.textContent = '';
+                typingCursor.hidden = false;
+                spinnerLine.hidden = true;
+                commandLine.hidden = true;
+                outputEl.hidden = true;
+                outputEl.scrollTop = 0;
+                outputLines.forEach((line) => { line.hidden = true; });
+                finalLine.hidden = true;
+            }
+
+            async function typeQuery(token) {
+                const chars = Array.from(query);
+                for (const char of chars) {
+                    if (token !== runToken) return false;
+                    queryEl.textContent += char;
+                    await wait(16);
+                }
+                typingCursor.hidden = true;
+                return token === runToken;
+            }
+
+            async function runDemo() {
+                const token = ++runToken;
+                replayBtn.disabled = true;
+                resetDemo();
+                await wait(500);
+                if (token !== runToken) return;
+
+                if (!await typeQuery(token)) return;
+
+                spinnerLine.hidden = false;
+                let frame = 0;
+                spinnerGlyph.textContent = spinnerFrames[frame];
+                spinnerTimer = setInterval(() => {
+                    frame = (frame + 1) % spinnerFrames.length;
+                    spinnerGlyph.textContent = spinnerFrames[frame];
+                }, 80);
+                await wait(900);
+                if (token !== runToken) return;
+
+                stopSpinner();
+                spinnerLine.hidden = true;
+                commandLine.hidden = false;
+                await wait(350);
+                if (token !== runToken) return;
+
+                outputEl.hidden = false;
+                for (const line of outputLines) {
+                    if (token !== runToken) return;
+                    line.hidden = false;
+                    await wait(55);
+                }
+                if (token !== runToken) return;
+
+                finalLine.hidden = false;
+                replayBtn.disabled = false;
+            }
+
+            replayBtn.addEventListener('click', runDemo);
+
+            if (!reduceMotion) {
+                setTimeout(runDemo, 1000);
+            }
+        })();
     </script>
 </body>
 </html>
